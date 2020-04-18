@@ -3,5 +3,3 @@
 *.log
 simulator
 robot
-src/robot/robot
-src/simulator/simulator
