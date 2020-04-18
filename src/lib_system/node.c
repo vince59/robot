@@ -54,6 +54,7 @@ int start_node(t_nodes *nodes, t_topics *topics, char *node_name, void *(*start_
     nodes->node_list[i].name = strdup(node_name);
     nodes->node_list[i].args = args;
     nodes->node_list[i].end = 0;
+    nodes->node_list[i].started = 0;
     nodes->node_list[i].log = create_log(node_name);
     nodes->node_list[i].nodes = nodes;
     nodes->node_list[i].topics = topics;
@@ -65,6 +66,7 @@ int start_node(t_nodes *nodes, t_topics *topics, char *node_name, void *(*start_
     s = pthread_attr_destroy(&attr);
     if (s != 0)
         handle_error("pthread_attr_destroy");
+    while (!nodes->node_list[i].started) short_wait();
     return (EXIT_SUCCESS);
 }
 

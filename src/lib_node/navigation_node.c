@@ -43,7 +43,7 @@ void *navigation_callback(void *arg)
 {
     t_callback_param *param = arg;
     t_destination_message *message = param->message;
-    write_log(param->log, LEVEL_INFO, FILE_ONLY, "New destination : x=%d, y=%d", message->x, message->y);
+    write_log(param->log, LEVEL_INFO, FILE_ONLY, "New destination to go x/y [%d,%d]", message->x, message->y);
     return NULL;
 }
 
@@ -55,12 +55,12 @@ void *navigation_function(void *arg)
     struct return_value *return_value;
     write_log(node->log, LEVEL_INFO, FILE_ONLY, "Starting navigation");
     subscribe_topic(node->topics, param->topic_destination, node, &navigation_callback);
-
+    node->started=1; //node is ready
     do
     {
         short_wait();
     } while (!node->end);
-    write_log(node->log, LEVEL_INFO, FILE_ONLY, "En of navigation");
+    write_log(node->log, LEVEL_INFO, FILE_ONLY, "End of navigation");
     return_value = malloc(sizeof(struct return_value));
     return_value->message = strdup("ok");
     return return_value;

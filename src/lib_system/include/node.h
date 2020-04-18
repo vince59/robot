@@ -20,6 +20,7 @@ struct node_info
     int num;             // node num
     char *name;          // node name
     int end;             // 1 = force thread to stop
+    int started;         // 1 = node is ready
     void *args;          // argument of the node function
     t_log *log;          // log file to debug
     struct s_topics *topics;

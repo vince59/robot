@@ -47,7 +47,7 @@ void *sample_function(void *arg)
     write_log(node->log, LEVEL_INFO, FILE_ONLY, "Hello, my name is %s and I am started", node->name);
     for (i = 0; i < node->topics->max_topic; i++) // loop only for the example, can be remove if you subscribe only on one topic
         subscribe_topic(node->topics, sample_topic[i], node, &sample_event);
-
+    node->started=1; //node is ready
     do
     {
         short_wait();
