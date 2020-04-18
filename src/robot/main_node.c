@@ -10,7 +10,7 @@
 #include <string.h>
 #include "node.h"
 #include "log_system.h"
-#include "sample_node.h"
+#include "navigation_node.h"
 #include "topic.h"
 
 #define MAX_NODE 10
@@ -21,29 +21,19 @@
 
 void main_node()
 {
-    int i;
-    struct sample_param sample_node[MAX_NODE];
-
+    int target;
     t_log *main_log_file = create_log("main");
     write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Start main node");
     t_topics *topics = init_topic(MAX_TOPIC, MAX_SUBSCRIBER, MAX_TOPIC_MESSAGE, MAX_BUFFER_MESSAGE, main_log_file);
-    printf("%d\n",topics->max_topic);
     t_nodes *nodes = init_node(MAX_NODE, main_log_file);
-    for (i = 0; i < MAX_TOPIC; i++)
-    {
-        char name[20];
-        sprintf(name, "topic_%02d", i);
-        sample_topic[i] = add_topic(topics, name, main_log_file);
-    }
-    for (i = 0; i < MAX_NODE; i++)
-    {
-        char name[20];
-        sprintf(name, "node_%02d", i);
-        sample_node[i].id = i;
-        sample_node[i].name = strdup(name);
-        start_node(nodes, topics, name, &sample_function, &sample_node[i], main_log_file);
-    }
-    sleep(5);
+    target = add_topic(topics, "target", main_log_file);
+    t_navigation *param = new_navigation_param(target);
+    start_node(nodes, topics, "navigation", &navigation_function, param, main_log_file);
+    t_destination_message *destination = new_destination_message(10, 13);
+    log_destination_message(destination, main_log_file);
+    write_topic(topics, target, destination, main_log_file);
+
+    sleep(2);
     close_node(nodes, main_log_file);
     delete_all_topic(topics, main_log_file);
     write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "End of main node");

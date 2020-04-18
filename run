@@ -1,0 +1,3 @@
+#!/bin/sh
+./simu
+cat ./log/*.log | sort > ./log/global.log
