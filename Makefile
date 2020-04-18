@@ -38,8 +38,8 @@ mrproper: clean
 	@(cd $(NODEL_DIR) && $(MAKE) $@)
 	@(cd $(SIMUL_DIR) && $(MAKE) $@)
 	@(cd $(ROBOT_DIR) && $(MAKE) $@)
-	@rm -f ./robot
-	@rm -f ./simulator
+	@rm -f ./simu
+	@rm -f ./bot
 	@rm -f ./log/*.log
 	
 

@@ -1,5 +1,7 @@
 *.o
 *.a
 *.log
-simulator
-robot
+
+bot
+
+simu
