@@ -24,7 +24,7 @@ void short_wait()
 
 t_nodes *init_node(int max_node, t_log *main_log_file)
 {
-    write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Init nodes, max nodes : %d", max_node);
+    write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Init nodes, max nodes : %d", max_node);
     t_nodes *nodes = malloc(sizeof(t_nodes));
     if (nodes == NULL)
         handle_error("malloc");
@@ -48,7 +48,7 @@ int start_node(t_nodes *nodes, t_topics *topics, char *node_name, void *(*start_
     nodes->nb_node++;
     if (nodes->nb_node > nodes->max_node)
         handle_error("max thread limit reached");
-    write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Create a new node (%s) #%d", node_name, nodes->nb_node);
+    write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Create a new node (%s) #%d", node_name, nodes->nb_node);
     i = nodes->nb_node - 1;
     nodes->node_list[i].num = i;
     nodes->node_list[i].name = strdup(node_name);
@@ -75,14 +75,14 @@ int close_node(t_nodes *nodes, t_log *main_log_file)
     int i, s;
     void *ret_val;
 
-    write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Close all nodes");
+    write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Close all nodes");
     for (i = 0; i < nodes->nb_node; i++)
     {
         nodes->node_list[i].end = 1;
         s = pthread_join(nodes->node_list[i].thread_id, &ret_val);
         if (s != 0)
             handle_error("pthread_join");
-        write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Close node %d (%s); returned value was %s",
+        write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Close node %d (%s); returned value was %s",
                   nodes->node_list[i].num, nodes->node_list[i].name, ((struct return_value *)ret_val)->message);
         free(((struct return_value *)ret_val)->message);
         free(ret_val);

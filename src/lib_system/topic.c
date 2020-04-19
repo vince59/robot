@@ -125,7 +125,7 @@ int add_topic(t_topics *topics, const char *name, t_log *main_log_file)
             handle_error("calloc");
         topics->topics[topics->nb_topic] = topic;
         topics->nb_topic++;
-        write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "New topic : %s", topic->name);
+        write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "New topic : %s", topic->name);
     }
     else
         handle_error("Max number of topics reached (%d)", topics->max_topic);
@@ -298,17 +298,17 @@ int delete_all_topic(t_topics *topics, t_log *main_log_file)
     int i, j, s;
     void *ret_val;
 
-    write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Close all topics (%d)", topics->nb_topic);
+    write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Close all topics (%d)", topics->nb_topic);
     for (i = 0; i < topics->nb_topic; i++)
     {
-        write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Stop %s listeners", topics->topics[i]->name);
+        write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Stop %s listeners", topics->topics[i]->name);
         for (j = 0; j < topics->topics[i]->nb_subscriber; j++)
         {
             topics->topics[i]->subscriber[j]->t_info->end_thread = 1;
             s = pthread_join(topics->topics[i]->subscriber[j]->t_info->thread_id, &ret_val);
             if (s != 0)
                 handle_error("pthread_join");
-            write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Close listener %s; returned value was %s",
+            write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Close listener %s; returned value was %s",
                       topics->topics[i]->subscriber[j]->name, ((struct return_value *)ret_val)->message);
             free(((struct return_value *)ret_val)->message);
             free(ret_val);
@@ -322,7 +322,7 @@ int delete_all_topic(t_topics *topics, t_log *main_log_file)
     s = pthread_join(topics->th_memory->thread_id, &ret_val);
     if (s != 0)
         handle_error("pthread_join");
-    write_log(main_log_file, LEVEL_INFO, ON_SCREEN, "Virtual memory manager stopped; returned value was %s",
+    write_log(main_log_file, LEVEL_INFO, FILE_ONLY, "Virtual memory manager stopped; returned value was %s",
               ((struct return_value *)ret_val)->message);
     free(((struct return_value *)ret_val)->message);
     free(ret_val);

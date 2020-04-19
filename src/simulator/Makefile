@@ -8,7 +8,6 @@ all: $(EXEC)
 simu: $(OBJ)
 	@$(CC) -o $@ $^ $(LDFLAGS)
 	@mv ./simu ../../
-	@cp ./main_node.c ../robot/
 
 %.o: %.c
 	@$(CC) -o $@ -c $< $(CFLAGS)

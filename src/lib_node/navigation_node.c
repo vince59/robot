@@ -23,26 +23,10 @@ t_navigation *new_navigation_param(int topic_id)
     return nav;
 }
 
-t_destination_message *new_destination_message(int x, int y)
-{
-    t_destination_message *new_destination = malloc(sizeof(t_destination_message));
-    if (new_destination == NULL)
-        handle_error("malloc");
-    new_destination->x = x;
-    new_destination->y = y;
-    return new_destination;
-}
-
-int log_destination_message(t_destination_message *destination, t_log *log_file)
-{
-    write_log(log_file, LEVEL_INFO, ON_SCREEN, "Send a new destination : x/y [%d,%d]", destination->x, destination->y);
-    return EXIT_SUCCESS;
-}
-
 void *navigation_callback(void *arg)
 {
     t_callback_param *param = arg;
-    t_destination_message *message = param->message;
+    t_coordinates_message *message = param->message;
     write_log(param->log, LEVEL_INFO, FILE_ONLY, "New destination to go x/y [%d,%d]", message->x, message->y);
     return NULL;
 }

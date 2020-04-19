@@ -9,6 +9,5 @@
 #include "node.h"
 
 int main ( void ) { 	
-	main_node();
 	return 1;
 }
